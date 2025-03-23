@@ -55,9 +55,11 @@ const accountSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-// Indexes for performance
-accountSchema.index({ accountNumber: 1 });
-accountSchema.index({ customerId: 1 });
+// Use single index declaration for performance
+accountSchema.index({ 
+  accountNumber: 1,
+  customerId: 1 
+});
 
 // Virtual for formatted balance
 accountSchema.virtual('formattedBalance').get(function() {
@@ -75,6 +77,36 @@ accountSchema.statics.generateAccountNumber = async function() {
 // Method to validate transaction amount
 accountSchema.methods.canDebit = function(amount) {
   return this.balance >= amount;
+};
+
+// Add validation methods for testing
+accountSchema.methods.validateDailyLimit = async function(amount) {
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  
+  const todayTransactions = await mongoose.model('Transaction').aggregate([
+    {
+      $match: {
+        sourceAccountId: this._id,
+        createdAt: { $gte: todayStart },
+        type: { $in: ['withdrawal', 'transfer'] }
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        total: { $sum: '$amount' }
+      }
+    }
+  ]);
+
+  const dailyTotal = (todayTransactions[0]?.total || 0) + amount;
+  const dailyLimit = this.accountType === 'business' ? 50000 : 10000;
+
+  if (dailyTotal > dailyLimit) {
+    throw new Error(`Daily transaction limit of ${dailyLimit} would be exceeded`);
+  }
+  return true;
 };
 
 const Account = mongoose.model('Account', accountSchema);

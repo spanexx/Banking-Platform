@@ -81,3 +81,6 @@ process.on('unhandledRejection', (err) => {
   // Gracefully shutdown if needed
   process.exit(1);
 });
+
+// Export app for testing
+module.exports = { app };

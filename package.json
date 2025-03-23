@@ -9,7 +9,8 @@
     "dev:frontend": "cd apps/frontend && ng serve --open",
     "build": "npm run build:backend && npm run build:frontend",
     "build:backend": "cd apps/backend && tsc",
-    "build:frontend": "cd apps/frontend && ng build"
+    "build:frontend": "cd apps/frontend && ng build",
+    "clean": "rimraf \"apps/backend/dist\" \"apps/frontend/dist\""
   },
   "private": true,
   "workspaces": [
@@ -22,7 +23,6 @@
   "description": "",
   "dependencies": {
     "@angular/cli": "^19.2.4",
-    "angular": "^1.8.3",
     "bcryptjs": "^3.0.2",
     "concurrently": "^9.1.2",
     "cors": "^2.8.5",
@@ -32,6 +32,7 @@
     "express-validator": "^7.2.1",
     "glob": "^11.0.1",
     "helmet": "^8.1.0",
+    "jest": "^29.7.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.2",
     "morgan": "^1.10.0",

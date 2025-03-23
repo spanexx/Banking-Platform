@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const validator = require('validator');
 
 const addressSchema = new mongoose.Schema({
   street: {
@@ -35,6 +33,5 @@ const addressSchema = new mongoose.Schema({
   }
 });
 
-const addressModel = mongoose.model('Address', addressSchema);
-
-module.exports = addressModel;
+// Export the schema instead of the model
+module.exports = { addressSchema };

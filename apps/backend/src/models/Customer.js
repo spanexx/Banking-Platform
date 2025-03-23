@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
-const addressSchema = require('./Address');
+const { addressSchema } = require('./Address'); // Import the schema, not the model
 
 const customerSchema = new mongoose.Schema({
   firstName: {
@@ -50,7 +50,7 @@ const customerSchema = new mongoose.Schema({
       message: 'Date of birth cannot be in the future'
     }
   },
-  address: addressSchema,
+  address: addressSchema, // Use the schema instead of the model
   identification: {
     type: {
       type: String,
@@ -88,9 +88,11 @@ customerSchema.virtual('fullName').get(function() {
   return `${this.firstName} ${this.lastName}`;
 });
 
-// Index for faster queries
-customerSchema.index({ email: 1 });
-customerSchema.index({ 'identification.number': 1 });
+// Remove duplicate indexes and use single declaration
+customerSchema.index({ 
+  email: 1,
+  'identification.number': 1 
+});
 
 // Pre-save middleware to hash password
 customerSchema.pre('save', async function(next) {

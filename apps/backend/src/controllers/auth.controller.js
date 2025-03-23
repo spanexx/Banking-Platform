@@ -4,12 +4,12 @@ const Customer = require('../models/Customer');
 const { UnauthorizedError } = require('../utils/errors');
 
 const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN
+  return jwt.sign({ id }, process.env.JWT_SECRET || 'test-secret', {
+    expiresIn: process.env.JWT_EXPIRES_IN || '1h'
   });
 };
 
-exports.register = async (req, res, next) => {
+const register = async (req, res, next) => {
   try {
     const customer = await Customer.create(req.body);
     const token = signToken(customer._id);
@@ -19,7 +19,7 @@ exports.register = async (req, res, next) => {
   }
 };
 
-exports.login = async (req, res, next) => {
+const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const customer = await Customer.findOne({ email }).select('+password');
@@ -39,7 +39,7 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.logout = async (req, res, next) => {
+const logout = async (req, res, next) => {
   try {
     // In a real implementation, you would blacklist the token
     res.json({ message: 'Successfully logged out' });
@@ -48,7 +48,7 @@ exports.logout = async (req, res, next) => {
   }
 };
 
-exports.refreshToken = async (req, res, next) => {
+const refreshToken = async (req, res, next) => {
   try {
     const token = signToken(req.customer.id);
     res.json({ token });
@@ -57,7 +57,7 @@ exports.refreshToken = async (req, res, next) => {
   }
 };
 
-exports.forgotPassword = async (req, res, next) => {
+const forgotPassword = async (req, res, next) => {
   try {
     const customer = await Customer.findOne({ email: req.body.email });
     
@@ -81,7 +81,7 @@ exports.forgotPassword = async (req, res, next) => {
   }
 };
 
-exports.resetPassword = async (req, res, next) => {
+const resetPassword = async (req, res, next) => {
   try {
     const hashedToken = crypto
       .createHash('sha256')
@@ -107,4 +107,14 @@ exports.resetPassword = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+module.exports = {
+  signToken,
+  register,
+  login,
+  logout,
+  refreshToken,
+  forgotPassword,
+  resetPassword
 };
