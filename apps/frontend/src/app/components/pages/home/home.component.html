@@ -1,0 +1,44 @@
+<div class="hero-section">
+  <div class="hero-content">
+    <h1>Welcome to World Coast Bank</h1>
+    <p>Your trusted partner in financial success. Experience banking reimagined.</p>
+    <div class="cta-buttons">
+      <a routerLink="/sign-up" class="cta-button primary">Open Account</a>
+      <a routerLink="/about" class="cta-button secondary">Learn More</a>
+    </div>
+  </div>
+</div>
+
+<section class="features-section">
+  <h2>Why Choose World Coast Bank</h2>
+  <div class="features-grid">
+    <div class="feature-card" *ngFor="let feature of features">
+      <fa-icon [icon]="feature.icon"></fa-icon>
+      <h3>{{ feature.title }}</h3>
+      <p>{{ feature.description }}</p>
+    </div>
+  </div>
+</section>
+
+<section class="info-section">
+  <div class="info-content">
+    <h2>Experience Modern Banking</h2>
+    <div class="info-grid">
+      <div class="info-item">
+        <h3>Personal Banking</h3>
+        <p>Tailored solutions for your personal financial needs</p>
+        <a routerLink="/personal">Learn More →</a>
+      </div>
+      <div class="info-item">
+        <h3>Business Banking</h3>
+        <p>Comprehensive services for your business growth</p>
+        <a routerLink="/business">Learn More →</a>
+      </div>
+      <div class="info-item">
+        <h3>Investment Services</h3>
+        <p>Expert guidance for your investment portfolio</p>
+        <a routerLink="/investments">Learn More →</a>
+      </div>
+    </div>
+  </div>
+</section>

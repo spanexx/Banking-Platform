@@ -1,0 +1,169 @@
+<div class="sign-up-container">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="sign-up-form">
+    <h2>Create Account</h2>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="firstName">
+          <fa-icon [icon]="faUser"></fa-icon> First Name
+        </label>
+        <input
+          type="text"
+          id="firstName"
+          formControlName="firstName"
+          [ngClass]="{ 'is-invalid': registerForm.get('firstName')?.errors && registerForm.get('firstName')?.touched }"
+        />
+        <div class="error-message" *ngIf="registerForm.get('firstName')?.errors?.['required'] && registerForm.get('firstName')?.touched">
+          First name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">
+          <fa-icon [icon]="faUser"></fa-icon> Last Name
+        </label>
+        <input
+          type="text"
+          id="lastName"
+          formControlName="lastName"
+          [ngClass]="{ 'is-invalid': registerForm.get('lastName')?.errors && registerForm.get('lastName')?.touched }"
+        />
+        <div class="error-message" *ngIf="registerForm.get('lastName')?.errors?.['required'] && registerForm.get('lastName')?.touched">
+          Last name is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">
+        <fa-icon [icon]="faEnvelope"></fa-icon> Email
+      </label>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        autocomplete="username"
+        [ngClass]="{ 'is-invalid': registerForm.get('email')?.errors && registerForm.get('email')?.touched }"
+      />
+      <div class="error-message" *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched">
+        Email is required
+      </div>
+      <div class="error-message" *ngIf="registerForm.get('email')?.errors?.['email'] && registerForm.get('email')?.touched">
+        Please enter a valid email
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="phoneNumber">
+        <fa-icon [icon]="faPhone"></fa-icon> Phone Number
+      </label>
+      <input
+        type="tel"
+        id="phoneNumber"
+        formControlName="phoneNumber"
+        [ngClass]="{ 'is-invalid': registerForm.get('phoneNumber')?.errors && registerForm.get('phoneNumber')?.touched }"
+      />
+      <div class="error-message" *ngIf="registerForm.get('phoneNumber')?.errors?.['required'] && registerForm.get('phoneNumber')?.touched">
+        Phone number is required
+      </div>
+      <div class="error-message" *ngIf="registerForm.get('phoneNumber')?.errors?.['pattern'] && registerForm.get('phoneNumber')?.touched">
+        Please enter a valid phone number (minimum 10 digits)
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dateOfBirth">
+        <fa-icon [icon]="faCalendar"></fa-icon> Date of Birth
+      </label>
+      <input
+        type="date"
+        id="dateOfBirth"
+        formControlName="dateOfBirth"
+        [max]="maxDate"
+        [ngClass]="{ 'is-invalid': registerForm.get('dateOfBirth')?.errors && registerForm.get('dateOfBirth')?.touched }"
+      />
+      <div class="error-message" *ngIf="registerForm.get('dateOfBirth')?.errors?.['required'] && registerForm.get('dateOfBirth')?.touched">
+        Date of birth is required
+      </div>
+    </div>
+
+    <div formGroupName="identification" class="form-group">
+      <label for="idType">
+        <fa-icon [icon]="faIdCard"></fa-icon> ID Type
+      </label>
+      <select
+        id="idType"
+        formControlName="type"
+        [ngClass]="{ 'is-invalid': registerForm.get('identification.type')?.errors && registerForm.get('identification.type')?.touched }"
+      >
+        <option value="">Select ID Type</option>
+        <option value="passport">Passport</option>
+        <option value="driverLicense">Driver's License</option>
+        <option value="nationalId">National ID</option>
+      </select>
+      <div class="error-message" *ngIf="registerForm.get('identification.type')?.errors?.['required'] && registerForm.get('identification.type')?.touched">
+        ID type is required
+      </div>
+
+      <label for="idNumber" class="mt-3">
+        <fa-icon [icon]="faIdCard"></fa-icon> ID Number
+      </label>
+      <input
+        type="text"
+        id="idNumber"
+        formControlName="number"
+        [ngClass]="{ 'is-invalid': registerForm.get('identification.number')?.errors && registerForm.get('identification.number')?.touched }"
+      />
+      <div class="error-message" *ngIf="registerForm.get('identification.number')?.errors?.['required'] && registerForm.get('identification.number')?.touched">
+        ID number is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">
+        <fa-icon [icon]="faLock"></fa-icon> Password
+      </label>
+      <input
+        type="password"
+        id="password"
+        formControlName="password"
+        autocomplete="new-password"
+        [ngClass]="{ 'is-invalid': registerForm.get('password')?.errors && registerForm.get('password')?.touched }"
+      />
+      <div class="error-message" *ngIf="registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched">
+        Password is required
+      </div>
+      <div class="error-message" *ngIf="registerForm.get('password')?.errors?.['minlength'] && registerForm.get('password')?.touched">
+        Password must be at least 6 characters
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">
+        <fa-icon [icon]="faLock"></fa-icon> Confirm Password
+      </label>
+      <input
+        type="password"
+        id="confirmPassword"
+        formControlName="confirmPassword"
+        autocomplete="new-password"
+        [ngClass]="{ 'is-invalid': registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched }"
+      />
+      <div class="error-message" *ngIf="registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched">
+        Passwords do not match
+      </div>
+    </div>
+
+    <div class="error-alert" *ngIf="error">
+      {{ error }}
+    </div>
+
+    <button type="submit" [disabled]="registerForm.invalid || loading">
+      {{ loading ? 'Creating Account...' : 'Create Account' }}
+    </button>
+
+    <div class="links">
+      <a routerLink="/sign-in">Already have an account? Sign In</a>
+    </div>
+  </form>
+</div>
