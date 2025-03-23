@@ -1,37 +1,44 @@
 {
-  "name": "frontend",
-  "version": "0.0.0",
+  "name": "bank",
+  "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd apps/backend && nodemon src/index.js",
+    "dev:frontend": "cd apps/frontend && ng serve --open",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:backend": "cd apps/backend && tsc",
+    "build:frontend": "cd apps/frontend && ng build"
   },
   "private": true,
+  "workspaces": [
+    "apps/backend",
+    "apps/frontend"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
-    "@angular/common": "^19.2.0",
-    "@angular/compiler": "^19.2.0",
-    "@angular/core": "^19.2.0",
-    "@angular/forms": "^19.2.0",
-    "@angular/platform-browser": "^19.2.0",
-    "@angular/platform-browser-dynamic": "^19.2.0",
-    "@angular/router": "^19.2.0",
-    "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.15.0"
-  },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "^19.2.4",
     "@angular/cli": "^19.2.4",
-    "@angular/compiler-cli": "^19.2.0",
-    "@types/jasmine": "~5.1.0",
-    "jasmine-core": "~5.6.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.7.2"
+    "angular": "^1.8.3",
+    "bcryptjs": "^3.0.2",
+    "concurrently": "^9.1.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "express-validator": "^7.2.1",
+    "glob": "^11.0.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.12.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.9",
+    "rimraf": "^6.0.1",
+    "rxjs": "^7.8.2",
+    "typescript": "^5.8.2",
+    "validator": "^13.12.0"
   }
 }
