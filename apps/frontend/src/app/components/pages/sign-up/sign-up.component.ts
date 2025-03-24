@@ -5,13 +5,14 @@ import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } 
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { faUser, faEnvelope, faLock, faPhone, faIdCard, faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sign-up',
   standalone: true,
   imports: [CommonModule, FontAwesomeModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './sign-up.component.html',
-  styleUrl: './sign-up.component.scss'
+  styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent {
   registerForm: FormGroup;
@@ -85,7 +86,11 @@ export class SignUpComponent {
       }
     };
 
-    this.authService.register(userData).subscribe({
+    this.authService.register(userData).pipe(
+      finalize(() => {
+        this.loading = false;
+      })
+    ).subscribe({
       next: () => {
         this.router.navigate(['/dashboard']);
       },
@@ -97,7 +102,6 @@ export class SignUpComponent {
         } else {
           this.error = error?.error?.message || error?.message || 'An error occurred during registration';
         }
-        this.loading = false;
       }
     });
   }

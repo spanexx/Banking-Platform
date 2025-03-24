@@ -5,13 +5,14 @@ import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } 
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sign-in',
   standalone: true,
   imports: [CommonModule, FontAwesomeModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './sign-in.component.html',
-  styleUrl: './sign-in.component.scss'
+  styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent implements OnInit {
   loginForm: FormGroup;
@@ -46,13 +47,14 @@ export class SignInComponent implements OnInit {
     this.error = '';
 
     const { email, password } = this.loginForm.value;
-    this.authService.login(email, password).subscribe({
+    this.authService.login(email, password).pipe(
+      finalize(() => this.loading = false)
+    ).subscribe({
       next: () => {
         this.router.navigate(['/dashboard']);
       },
       error: (error: any) => {
         this.error = error?.error?.message || error?.message || 'An error occurred during sign in';
-        this.loading = false;
       }
     });
   }

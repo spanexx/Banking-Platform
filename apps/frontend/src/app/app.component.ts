@@ -30,4 +30,6 @@ import { FooterComponent } from './components/shared/footer/footer.component';
     }
   `]
 })
-export class AppComponent {}
+export class AppComponent {
+  title: string = 'World Coast Bank';
+}

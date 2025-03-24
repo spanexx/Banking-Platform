@@ -7,8 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "clean": "rimraf .angular/cache"
-
+    "clean": "rimraf .angular/cache",
+    "test:coverage": "ng test --code-coverage"
   },
   "private": true,
   "dependencies": {

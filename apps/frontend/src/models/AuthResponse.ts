@@ -1,4 +1,9 @@
 export interface AuthResponse {
-    token: string;
-    customer: any; // Replace 'any' with Customer interface
-  }
+  token: string;
+  customer: {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+  };
+}
